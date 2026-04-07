@@ -34,7 +34,7 @@ public class ProdutoController {
         return ResponseEntity.ok(produtos);
     }
 
-    // 200 conseguiu encontrar ou 404 de fudeu não achei
+    // 200 conseguiu encontrar ou 404 de não achei
     @GetMapping("/{id}")
     public ResponseEntity<ProdutoModel> buscar(@PathVariable Long id){
         ProdutoModel produto = service.buscar(id);
