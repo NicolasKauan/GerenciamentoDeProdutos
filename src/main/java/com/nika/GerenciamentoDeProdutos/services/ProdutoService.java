@@ -2,12 +2,16 @@ package com.nika.GerenciamentoDeProdutos.services;
 
 import com.nika.GerenciamentoDeProdutos.model.ProdutoModel;
 import com.nika.GerenciamentoDeProdutos.repositories.ProdutoRepository;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.UUID;
 
 @Service
-public class ProdutoService {
+public class ProdutoService implements UserDetailsService {
 
     private final ProdutoRepository repository;
 
@@ -23,11 +27,20 @@ public class ProdutoService {
         return repository.findAll();
     }
 
-    public ProdutoModel buscar(Long id){
+    public ProdutoModel buscar(UUID id){
         return repository.findById(id).orElse(null);
     }
 
-    public void deletar(Long id){
+    public void deletar(UUID id){
         repository.deleteById(id);
     }
+
+    public ProdutoModel BuscarNome(String nome){
+        return repository.findBynome(nome);
+    }
+
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        return repository.findByLogin(username);
+    }gi
 }

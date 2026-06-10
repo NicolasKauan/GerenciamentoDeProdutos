@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/produtos")
@@ -36,8 +37,17 @@ public class ProdutoController {
 
     // 200 conseguiu encontrar ou 404 de fudeu não achei
     @GetMapping("/{id}")
-    public ResponseEntity<ProdutoModel> buscar(@PathVariable Long id){
+    public ResponseEntity<ProdutoModel> buscar(@PathVariable UUID id){
         ProdutoModel produto = service.buscar(id);
+        if(produto != null){
+            return ResponseEntity.ok(produto);
+        }
+        return ResponseEntity.notFound().build();
+    }
+
+    @GetMapping("/buscar/{nome}")
+    public ResponseEntity<ProdutoModel> buscarNome(@PathVariable String nome){
+        ProdutoModel produto = service.BuscarNome(nome);
         if(produto != null){
             return ResponseEntity.ok(produto);
         }
@@ -46,7 +56,7 @@ public class ProdutoController {
 
     //204 apagou com sucesso rapaziada
     @DeleteMapping("/{id}")
-    public ResponseEntity<ProdutoModel> deletar(@PathVariable Long id){
+    public ResponseEntity<ProdutoModel> deletar(@PathVariable UUID id){
         service.deletar(id);
         return ResponseEntity.noContent().build();
     }
